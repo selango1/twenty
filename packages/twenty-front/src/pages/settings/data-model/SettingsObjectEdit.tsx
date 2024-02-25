@@ -22,7 +22,7 @@ export const SettingsObjectEdit = () => {
 
   const { objectSlug = '' } = useParams();
   const {
-    disableObjectMetadataItem,
+    deactivateObjectMetadataItem,
     editObjectMetadataItem,
     findActiveObjectMetadataItemBySlug,
   } = useObjectMetadataItemForSettings();
@@ -85,8 +85,8 @@ export const SettingsObjectEdit = () => {
     }
   };
 
-  const handleDisable = async () => {
-    await disableObjectMetadataItem(activeObjectMetadataItem);
+  const handleDeactivate = async () => {
+    await deactivateObjectMetadataItem(activeObjectMetadataItem);
     navigate('/settings/objects');
   };
 
@@ -126,12 +126,12 @@ export const SettingsObjectEdit = () => {
           }
         />
         <Section>
-          <H2Title title="Danger zone" description="Disable object" />
+          <H2Title title="Danger zone" description="Deactivate object" />
           <Button
             Icon={IconArchive}
-            title="Disable"
+            title="Deactivate"
             size="small"
-            onClick={handleDisable}
+            onClick={handleDeactivate}
           />
         </Section>
       </SettingsPageContainer>
