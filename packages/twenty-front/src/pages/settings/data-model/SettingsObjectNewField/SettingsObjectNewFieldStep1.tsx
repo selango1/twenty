@@ -157,7 +157,7 @@ export const SettingsObjectNewFieldStep1 = () => {
               </TableSection>
             )}
             {!!disabledMetadataFields.length && (
-              <TableSection title="Disabled">
+              <TableSection title="Inactive">
                 {disabledMetadataFields.map((disabledMetadataField) => (
                   <SettingsObjectFieldItemTableRow
                     key={disabledMetadataField.name}
