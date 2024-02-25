@@ -10,7 +10,7 @@ import { isLabelIdentifierField } from '@/object-metadata/utils/isLabelIdentifie
 import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
 import { SettingsAboutSection } from '@/settings/data-model/object-details/components/SettingsObjectAboutSection';
 import { SettingsObjectFieldActiveActionDropdown } from '@/settings/data-model/object-details/components/SettingsObjectFieldActiveActionDropdown';
-import { SettingsObjectFieldDisabledActionDropdown } from '@/settings/data-model/object-details/components/SettingsObjectFieldDisabledActionDropdown';
+import { SettingsObjectFieldInactiveActionDropdown } from '@/settings/data-model/object-details/components/SettingsObjectFieldInactiveActionDropdown';
 import {
   SettingsObjectFieldItemTableRow,
   StyledObjectFieldTableRow,
@@ -39,7 +39,7 @@ export const SettingsObjectDetail = () => {
 
   const { objectSlug = '' } = useParams();
   const {
-    disableObjectMetadataItem,
+    deactivateObjectMetadataItem,
     editObjectMetadataItem,
     findActiveObjectMetadataItemBySlug,
   } = useObjectMetadataItemForSettings();
@@ -51,7 +51,7 @@ export const SettingsObjectDetail = () => {
     if (!activeObjectMetadataItem) navigate(AppPath.NotFound);
   }, [activeObjectMetadataItem, navigate]);
 
-  const { activateMetadataField, disableMetadataField, eraseMetadataField } =
+  const { activateMetadataField, deactivateMetadataField, eraseMetadataField } =
     useFieldMetadataItem();
 
   if (!activeObjectMetadataItem) return null;
@@ -59,17 +59,17 @@ export const SettingsObjectDetail = () => {
   const activeMetadataFields = activeObjectMetadataItem.fields.filter(
     (metadataField) => metadataField.isActive && !metadataField.isSystem,
   );
-  const disabledMetadataFields = activeObjectMetadataItem.fields.filter(
+  const inativeMetadataFields = activeObjectMetadataItem.fields.filter(
     (metadataField) => !metadataField.isActive && !metadataField.isSystem,
   );
 
-  const handleDisableObject = async () => {
-    await disableObjectMetadataItem(activeObjectMetadataItem);
+  const handleDeactivateObject = async () => {
+    await deactivateObjectMetadataItem(activeObjectMetadataItem);
     navigate('/settings/objects');
   };
 
-  const handleDisableField = (activeFieldMetadatItem: FieldMetadataItem) => {
-    disableMetadataField(activeFieldMetadatItem);
+  const handleDeactivateField = (activeFieldMetadatItem: FieldMetadataItem) => {
+    deactivateMetadataField(activeFieldMetadatItem);
   };
 
   const handleSetLabelIdentifierField = (
@@ -94,7 +94,7 @@ export const SettingsObjectDetail = () => {
           iconKey={activeObjectMetadataItem.icon ?? undefined}
           name={activeObjectMetadataItem.labelPlural || ''}
           isCustom={activeObjectMetadataItem.isCustom}
-          onDisable={handleDisableObject}
+          onDeactivate={handleDeactivateObject}
           onEdit={() => navigate('./edit')}
         />
         <Section>
@@ -167,26 +167,26 @@ export const SettingsObjectDetail = () => {
                 })}
               </TableSection>
             )}
-            {!!disabledMetadataFields.length && (
-              <TableSection isInitiallyExpanded={false} title="Disabled">
-                {disabledMetadataFields.map((disabledMetadataField) => (
+            {!!inactiveMetadataFields.length && (
+              <TableSection isInitiallyExpanded={false} title="Inactive">
+                {inactiveMetadataFields.map((inactiveMetadataField) => (
                   <SettingsObjectFieldItemTableRow
-                    key={disabledMetadataField.id}
+                    key={inactiveMetadataField.id}
                     variant={
                       activeObjectMetadataItem.isCustom
                         ? 'identifier'
                         : 'field-type'
                     }
-                    fieldMetadataItem={disabledMetadataField}
+                    fieldMetadataItem={inactiveMetadataField}
                     ActionIcon={
-                      <SettingsObjectFieldDisabledActionDropdown
-                        isCustomField={!!disabledMetadataField.isCustom}
-                        scopeKey={disabledMetadataField.id}
+                      <SettingsObjectFieldInactiveActionDropdown
+                        isCustomField={!!inactiveMetadataField.isCustom}
+                        scopeKey={inactiveMetadataField.id}
                         onActivate={() =>
-                          activateMetadataField(disabledMetadataField)
+                          activateMetadataField(inactiveMetadataField)
                         }
                         onErase={() =>
-                          eraseMetadataField(disabledMetadataField)
+                          eraseMetadataField(inactiveMetadataField)
                         }
                       />
                     }
